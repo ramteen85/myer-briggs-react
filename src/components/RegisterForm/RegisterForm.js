@@ -75,10 +75,7 @@ const RegisterForm = (props) => {
 
     try {
       // get response
-      let response = await fetch(
-        'http://localhost:8000/api/user/register',
-        requestOptions,
-      );
+      let response = await fetch('/api/user/register', requestOptions);
       response = await response.json();
 
       if (response.message !== 'Registration Successful!') {

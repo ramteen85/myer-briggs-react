@@ -43,7 +43,7 @@ const LoginForm = (props) => {
 
     try {
       // get response
-      let response = await fetch('http://localhost:8000/api/user/login', requestOptions);
+      let response = await fetch('/api/user/login', requestOptions);
       response = await response.json();
 
       if (response.message !== 'Login Successful!') {

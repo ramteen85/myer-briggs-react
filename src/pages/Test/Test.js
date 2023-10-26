@@ -174,10 +174,7 @@ const Test = () => {
 
     try {
       // get response
-      let response = await fetch(
-        'http://localhost:8000/api/user/save-result',
-        requestOptions,
-      );
+      let response = await fetch('/api/user/save-result', requestOptions);
       response = await response.json();
       console.log(response);
 
