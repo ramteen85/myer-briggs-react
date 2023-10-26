@@ -2,7 +2,11 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { styled } from 'styled-components';
 import { Input } from '../../components/Common/Common';
+import { questionCollection } from './Questions';
 import _ from 'lodash';
+import ConfirmBox from '../../components/ConfirmBox/ConfirmBox';
+import { useDispatch, useSelector } from 'react-redux';
+import { authActions } from '../../store/auth';
 
 const inputStyle = { width: '1rem', marginRight: '1rem', height: '1rem' };
 
@@ -14,358 +18,50 @@ const inputStyle = { width: '1rem', marginRight: '1rem', height: '1rem' };
 
 const Test = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [state, setState] = React.useState({
     currentQuestion: 1,
     selected: '',
-    questions: [
-      {
-        text: 'At a party do you: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Interact with many, including strangers',
-            answerKey: 'E',
-          },
-          { letter: 'B', text: 'Interact with a few, known to you', answerKey: 'I' },
-        ],
-      },
-      {
-        text: 'Are you more: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Realistic',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Philosophically inclined', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Are you more intrigued by: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Facts',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Comparing similarities', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Are you usually more: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Fair minded',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'Kind hearted', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'Do you tend to be more: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Dispassionate',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'Sympathetic', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'Do you prefer to work: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'To deadlines',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Just "whenever"', answerKey: 'P' },
-        ],
-      },
-      {
-        text: 'Do you tend to choose: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Rather carefully',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Somewhat impulsively', answerKey: 'P' },
-        ],
-      },
-      {
-        text: 'At parties do you: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Stay late, with increasing energy',
-            answerKey: 'E',
-          },
-          { letter: 'B', text: 'Leave early, with decreasing energy', answerKey: 'I' },
-        ],
-      },
-      {
-        text: 'Are you a more: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Sensible person',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Reflective person', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Are you more drawn to: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Hard data',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Complicated ideas', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Is it more natural to you to be: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Fair to others',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'Nice to others', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'In first approaching others are you more: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Impersonal and detached',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'Personal and engaging', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'Are you usually more: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Punctual',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Leisurely', answerKey: 'P' },
-        ],
-      },
-      {
-        text: 'Does it bother you more having things: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Incomplete',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Completed', answerKey: 'P' },
-        ],
-      },
-      {
-        text: 'In your social groups do you: ',
-        answers: [
-          {
-            letter: 'A',
-            text: "Keep abreast of others' happenings",
-            answerKey: 'E',
-          },
-          { letter: 'B', text: 'Get behind on the news', answerKey: 'I' },
-        ],
-      },
-      {
-        text: 'Are you usually more interested in: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Specifics',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Concepts', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Do you prefer writers who: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Say what they mean',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Use lots of analogies', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Are you more naturally: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Impartial',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'Compassionate', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'In judging are you more likely to be: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Impersonal',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'Sentimental', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'Do you usually: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Settle things',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Keep options open', answerKey: 'P' },
-        ],
-      },
-      {
-        text: 'Are you usually rather: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Quick to agree to a time',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Reluctant to agree to a time', answerKey: 'P' },
-        ],
-      },
-      {
-        text: 'In phoning do you: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Just start talking',
-            answerKey: 'E',
-          },
-          { letter: 'B', text: "Rehearse what you'll say", answerKey: 'I' },
-        ],
-      },
-      {
-        text: 'Facts: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Speak for themselves',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Usually require interpretation', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Do you prefer to work with: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Practical information',
-            answerKey: 'S',
-          },
-          { letter: 'B', text: 'Abstract ideas', answerKey: 'N' },
-        ],
-      },
-      {
-        text: 'Are you inclined to be more: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Cool headed',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'Warm hearted', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'Would you rather be: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'More just than merciful',
-            answerKey: 'T',
-          },
-          { letter: 'B', text: 'More merciful than just', answerKey: 'F' },
-        ],
-      },
-      {
-        text: 'Are you more comfortable: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Setting a schedule',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Putting things off', answerKey: 'P' },
-        ],
-      },
-      {
-        text: 'Are you more comfortable with: ',
-        answers: [
-          {
-            letter: 'A',
-            text: 'Written agreements',
-            answerKey: 'J',
-          },
-          { letter: 'B', text: 'Handshake agreements', answerKey: 'P' },
-        ],
-      },
-    ],
+    personalityPoints: {
+      E: 0,
+      I: 0,
+      S: 0,
+      N: 0,
+      T: 0,
+      F: 0,
+      J: 0,
+      P: 0,
+    },
+    questions: questionCollection,
     answers: [],
     result: '',
   });
 
-  const stopTest = () => {
-    // set state to initial state
-    setState({
-      ...state,
-      currentQuestion: 1,
-      selected: '',
-      personalityPoints: {
-        E: 0,
-        I: 0,
-        S: 0,
-        N: 0,
-        T: 0,
-        F: 0,
-        J: 0,
-        P: 0,
-      },
-      questions: [
-        {
-          text: 'At a party do you: ',
-          answers: [
-            {
-              letter: 'A',
-              text: 'Interact with many, including strangers',
-              answerKey: 'E',
-            },
-            { letter: 'B', text: 'Interact with a few, known to you', answerKey: 'I' },
-          ],
-        },
-      ],
-      answers: [],
-      result: '',
-    });
+  const token = useSelector((state) => state.auth?.token);
+  const email = useSelector((state) => state.auth?.email);
 
-    // back to home page
-    navigate('/members');
+  const [dialog, setDialog] = React.useState({
+    title: 'Confirmation',
+    message:
+      'If you stop the test before your results are recorded, your previously answered questions will not be saved. Do you wish to stop the test?',
+    show: false,
+  });
+
+  React.useEffect(() => {
+    if (state.result !== '') {
+      navigate({
+        pathname: '/result',
+        search: '?personality=' + state.result,
+      });
+    }
+  }, [state.result, navigate]);
+
+  const stopTest = () => {
+    // confirm box
+    setDialog({
+      ...dialog,
+      show: true,
+    });
   };
 
   const previousQuestion = () => {
@@ -378,7 +74,7 @@ const Test = () => {
     });
   };
 
-  const nextQuestion = (last = false) => {
+  const nextQuestion = (last) => {
     // get and edit answer array
     let answers = [...state.answers];
     let personalityPoints = { ...state.personalityPoints };
@@ -413,12 +109,19 @@ const Test = () => {
       answers[state.currentQuestion - 1] = newLetter;
     }
 
+    const goQuestion = !last ? state.currentQuestion + 1 : state.currentQuestion;
+    let selected = '';
+    if (answers[state.currentQuestion] && answers[state.currentQuestion] !== '') {
+      selected = answers[state.currentQuestion];
+    }
+
     // next question
     setState({
       ...state,
-      currentQuestion: !last ? state.currentQuestion + 1 : state.currentQuestion,
+      currentQuestion: goQuestion,
       answers: [...answers],
       personalityPoints: { ...personalityPoints },
+      selected: selected,
     });
   };
 
@@ -452,12 +155,41 @@ const Test = () => {
     return result;
   };
 
-  const getResults = () => {
+  const getResults = async () => {
     //submit last question
     nextQuestion(true);
     // get the test results
     let result = calculateResults();
     setState({ ...state, result: result });
+
+    // save user result
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', authorization: 'Bearer ' + token },
+      body: JSON.stringify({
+        personality: result,
+        email: email,
+      }),
+    };
+
+    try {
+      // get response
+      let response = await fetch(
+        'http://localhost:8000/api/user/save-result',
+        requestOptions,
+      );
+      response = await response.json();
+      console.log(response);
+
+      // set the personality
+      dispatch(authActions.setPersonality({ personality: response.personality }));
+
+      // go to results page
+      navigate('/result?personality=' + result);
+    } catch (error) {
+      console.log(error);
+      navigate('/members');
+    }
   };
 
   const selectOption = (selected) => {
@@ -467,42 +199,88 @@ const Test = () => {
     });
   };
 
+  const confirm = (value) => {
+    setDialog({ ...dialog, show: false });
+    if (value === 'y') {
+      // set state to initial state
+      setState({
+        ...state,
+        currentQuestion: 1,
+        selected: '',
+        personalityPoints: {
+          E: 0,
+          I: 0,
+          S: 0,
+          N: 0,
+          T: 0,
+          F: 0,
+          J: 0,
+          P: 0,
+        },
+        questions: questionCollection,
+        answers: [],
+        result: '',
+      });
+
+      // back to home page
+      navigate('/members');
+    }
+  };
+
   return (
     <AppContainer>
       <BoxContainer>
         <IntroHeaderContainer>
           <IntroHeader>{state.questions[state.currentQuestion - 1].text}</IntroHeader>
           <IntroSubHeader>
-            Question {state.currentQuestion} of {state.questions.length}
+            ( Question {state.currentQuestion} of {state.questions.length} )
           </IntroSubHeader>
         </IntroHeaderContainer>
         <OptionsContainer>
-          {_.map(state.questions[state.currentQuestion - 1].answers, (answer) => (
-            <FormControl>
+          {_.map(state.questions[state.currentQuestion - 1].answers, (answer, index) => (
+            <FormControl key={index} onClick={() => selectOption(answer.letter)}>
               <Input
+                type="checkbox"
+                id={`chk${index}`}
                 style={inputStyle}
-                type="radio"
-                value={answer.letter}
-                checked={answer.letter === state.selected}
-                onClick={() => selectOption(answer.letter)}
-              />{' '}
-              {answer.letter}: {answer.text}
+                checked={state.selected === answer.letter}
+                onChange={() => {}}
+              />
+              <span className="tick-wrapper">
+                <span
+                  className={state.selected === answer.letter ? 'tick' : undefined}
+                ></span>
+              </span>
+              <label htmlFor={`chk${index}`}>
+                {answer.letter}: {answer.text}
+              </label>
             </FormControl>
           ))}
         </OptionsContainer>
         <ButtonContainer>
           {state.currentQuestion > 1 && (
-            <Button onClick={previousQuestion}>Previous</Button>
+            <Button onClick={() => previousQuestion()}>Previous</Button>
           )}
           <Button onClick={stopTest}>Stop Test</Button>
           {state.currentQuestion !== state.questions.length && (
-            <Button onClick={nextQuestion}>Next</Button>
+            <Button onClick={() => nextQuestion()} disabled={state?.selected === ''}>
+              Next
+            </Button>
           )}
           {state.currentQuestion === state.questions.length && (
-            <Button onClick={getResults}>Get Results</Button>
+            <Button onClick={() => getResults()} disabled={state?.selected === ''}>
+              Get Results
+            </Button>
           )}
         </ButtonContainer>
       </BoxContainer>
+      <ConfirmBox
+        show={dialog.show}
+        title={dialog.title}
+        message={dialog.message}
+        noFunc={() => confirm('n')}
+        yesFunc={() => confirm('y')}
+      />
     </AppContainer>
   );
 };
@@ -562,7 +340,7 @@ const IntroHeader = styled.p`
 `;
 
 const IntroSubHeader = styled.p`
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 400;
   width: 100%;
   text-align: center;
@@ -584,9 +362,107 @@ const FormControl = styled.div`
   align-items: center;
   font-size: 0.8rem;
   margin-left: 2rem;
+  cursor: pointer;
+  padding: 0.2rem;
+
+  & > label {
+    position: relative;
+    padding-left: 1.5rem;
+    color: rgb(52, 20, 175);
+    font-size: 1rem;
+
+    @media (max-width: 600px) {
+      font-size: 0.8rem;
+    }
+    @media (max-width: 400px) {
+      font-size: 0.6rem;
+      padding-left: 0;
+    }
+  }
+
+  & > input {
+    display: none;
+
+    @media (max-width: 400px) {
+      display: block;
+    }
+  }
+
+  .tick-wrapper {
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgb(52, 20, 175);
+    // background-color: rgb(52, 20, 175);
+    border-radius: 50%;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(55deg);
+
+    @media (max-width: 400px) {
+      display: none;
+    }
+  }
+
+  .tick {
+    width: 25px;
+    height: 8px;
+    position: relative;
+    background: rgb(52, 20, 175);
+    transform-origin: 0% 0%;
+    border-radius: -1px -1px 0px -1px;
+    margin-bottom: -3px;
+    animation: animate 1s 1;
+  }
+
+  .tick::before {
+    content: '';
+    position: absolute;
+    width: 8px;
+    height: 40px;
+    background: inherit;
+    border-radius: inherit;
+    right: 0;
+    bottom: 5px;
+    transform-origin: 0% 100%;
+    animation: animate-before 1s 1;
+  }
+
+  @keyframes animate {
+    0%,
+    20% {
+      transform: scaleX(0);
+    }
+    30% {
+      transform: scaleX(1);
+    }
+    95%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes animate-before {
+    0%,
+    30% {
+      transform: scaleY(0);
+    }
+    45% {
+      transform: scaleY(1);
+    }
+    95%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  &:hover {
+    background: #ececec;
+  }
 
   &:not(:last-of-type) {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 `;
 
@@ -618,6 +494,11 @@ const Button = styled.button`
 
   &:hover {
     background: green;
+  }
+
+  &:disabled {
+    background: #ececec;
+    cursor: not-allowed;
   }
 
   @media (max-width: 950px) {

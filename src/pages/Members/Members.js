@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import { styled } from 'styled-components';
+import { authActions } from '../../store/auth';
+import ConfirmBox from '../../components/ConfirmBox/ConfirmBox';
 
 const AppContainer = styled.div`
   width: 100%;
@@ -128,15 +131,38 @@ const Button = styled.button`
 
 const Members = () => {
   const navigate = useNavigate();
+  const name = useSelector((state) => state.auth?.name);
+  const personality = useSelector((state) => state.auth?.personality);
+  // const personality = 'INFJ';
+  const dispatch = useDispatch();
+  const [state, setState] = React.useState({
+    showConfirmBox: false,
+  });
 
-  const logout = () => {
-    // logout
-    navigate('/');
+  const onLogout = (e) => {
+    e.preventDefault();
+    dispatch(authActions.logoutHandler());
+  };
+
+  const toResult = (e) => {
+    navigate({
+      pathname: '/result',
+      search: '?personality=' + personality,
+    });
   };
 
   const toTest = () => {
     // to test page
     navigate('/test');
+  };
+
+  const toRetakeTest = () => {
+    // open confirm box
+    setState({ ...state, showConfirmBox: true });
+  };
+
+  const sayNo = () => {
+    setState({ showConfirmBox: false });
   };
 
   return (
@@ -146,25 +172,56 @@ const Members = () => {
           <IntroHeader>Welcome to</IntroHeader>
           <IntroHeader>The Myer Briggs Personality Test</IntroHeader>
         </IntroHeaderContainer>
-        <TextContainer>
-          <TextParagraph>Hi Ram!</TextParagraph>
-          <TextParagraph>
-            The Myer Briggs personality Test was designed to help people understand
-            personality differences in the general population. While there are no “better”
-            or “worse” personality preferences, the test can help people understand their
-            strengths and blind spots as well as how they might differ from others.
-          </TextParagraph>
-          <TextParagraph>
-            Feel free to take the test. Once you have determined your personality type you
-            can then view your results or take the test again!
-          </TextParagraph>
-        </TextContainer>
+        {personality.length === 0 && (
+          <TextContainer>
+            <TextParagraph>Hi {name}!</TextParagraph>
+            <TextParagraph>
+              The Myer Briggs personality Test was designed to help people understand
+              personality differences in the general population. While there are no
+              “better” or “worse” personality preferences, the test can help people
+              understand their strengths and blind spots as well as how they might differ
+              from others.
+            </TextParagraph>
+            <TextParagraph>
+              Feel free to take the test. Once you have determined your personality type
+              you can then view your results at any time or take the test again!
+            </TextParagraph>
+          </TextContainer>
+        )}
+        {personality.length === 4 && (
+          <TextContainer>
+            <TextParagraph>Welcome Back {name}!</TextParagraph>
+            <TextParagraph>
+              The Myer Briggs personality Test was designed to help people understand
+              personality differences in the general population.
+            </TextParagraph>
+            <TextParagraph>Your Personality type is: {personality}</TextParagraph>
+            <TextParagraph>
+              Click "View Result" to read more about your personality type or feel free to
+              retake the test.
+            </TextParagraph>
+          </TextContainer>
+        )}
         <ButtonContainer>
           {/* <Button>View Results</Button> */}
-          <Button onClick={toTest}>Take Test</Button>
-          <Button onClick={logout}>Logout</Button>
+          {personality.length === 0 && <Button onClick={toTest}>Take Test</Button>}
+          {personality.length === 4 && (
+            <Button onClick={toRetakeTest}>ReTake Test</Button>
+          )}
+          {personality.length === 4 && <Button onClick={toResult}>View Result</Button>}
+          <Button onClick={onLogout}>Logout</Button>
         </ButtonContainer>
       </BoxContainer>
+      {/* confirm box */}
+      <ConfirmBox
+        show={state.showConfirmBox}
+        title={'Confirmation'}
+        message={
+          'If you choose to take this test again, it will replace your previous results upon submission. If you cancel the test you will get to keep your old results. Do you wish to continue?'
+        }
+        noFunc={sayNo}
+        yesFunc={toTest}
+      />
     </AppContainer>
   );
 };

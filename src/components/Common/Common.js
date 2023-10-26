@@ -74,6 +74,7 @@ export const SubmitButton = styled.button`
   font-size: 1rem;
   font-weight: 600;
   border: none;
+  letter-spacing: 1px;
   border-radius: 100px 100px 100px 100px;
   cursor: pointer;
   transition: all, 240ms ease-in-out;
@@ -87,5 +88,6 @@ export const SubmitButton = styled.button`
 
   &:hover {
     filter: brightness(1.03);
+    background: green;
   }
 `;
